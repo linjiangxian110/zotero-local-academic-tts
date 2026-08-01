@@ -4,6 +4,7 @@ LocalAcademicTTS = {
 	rootURI: null,
 	prefPrefix: "extensions.localacademictts.",
 	client: null,
+	backendStartPromise: null,
 	audio: null,
 	audioStopResolve: null,
 	isReading: false,
@@ -19,6 +20,8 @@ LocalAcademicTTS = {
 	maxChunkLength: 1200,
 	defaultSettings: {
 		serverURL: "http://127.0.0.1:8765",
+		backendProjectRoot: "D:\\research\\zotero朗读插件",
+		autoStartBackend: true,
 		voiceID: "af_heart",
 		speed: 1.0,
 		showDebugMenu: false,
@@ -39,6 +42,7 @@ LocalAcademicTTS = {
 		this.client = LocalAcademicTTSTTSClient;
 		this.registerReaderSelectionPopup();
 		this.registerReaderToolbar();
+		this.scheduleBackendAutoStart();
 		this.log("Initialized");
 	},
 
@@ -64,6 +68,11 @@ LocalAcademicTTS = {
 		const serverURL = String(this.getPref("serverURL"))
 			.trim()
 			.replace(/\/+$/, "");
+		const backendProjectRoot = String(this.getPref("backendProjectRoot") || "")
+			.trim()
+			.replace(/[\\\/]+$/, "");
+		const autoStartBackend = this.getPref("autoStartBackend") === true ||
+			String(this.getPref("autoStartBackend")) === "true";
 		const voiceID = String(this.getPref("voiceID")).trim() || "af_heart";
 		const rawSpeed = Number(this.getPref("speed"));
 		const showDebugMenu = this.getPref("showDebugMenu") === true ||
@@ -74,6 +83,9 @@ LocalAcademicTTS = {
 
 		return {
 			serverURL: serverURL || this.defaultSettings.serverURL,
+			backendProjectRoot:
+				backendProjectRoot || this.defaultSettings.backendProjectRoot,
+			autoStartBackend,
 			voiceID,
 			language: this.voiceLanguages[voiceID] || "en-US",
 			speed,
@@ -84,6 +96,136 @@ LocalAcademicTTS = {
 	getClient(serverURL = null) {
 		this.client.baseURL = serverURL || this.getSettings().serverURL;
 		return this.client;
+	},
+
+	scheduleBackendAutoStart() {
+		Zotero.Promise.delay(1500).then(() => {
+			this.ensureBackendReady(null, { silent: true }).catch((error) => {
+				this.log("Backend auto-start skipped or failed: " + error);
+			});
+		});
+	},
+
+	async ensureBackendReady(win = null, options = {}) {
+		const settings = this.getSettings();
+		const client = this.getClient(settings.serverURL);
+
+		if (await this.isBackendHealthy(client, 2500)) {
+			return true;
+		}
+
+		if (!settings.autoStartBackend) {
+			throw new Error(
+				"Local TTS backend is not running and auto start is disabled. Enable auto start in Zotero Settings or start Kokoro manually.",
+			);
+		}
+
+		if (!settings.backendProjectRoot) {
+			throw new Error(
+				"Backend project root is not configured. Open Zotero Settings -> Local Academic TTS and set Project root.",
+			);
+		}
+
+		if (!this.backendStartPromise) {
+			this.backendStartPromise = this.startBackendProcess(settings)
+				.then(() => this.waitForBackendReady(client))
+				.finally(() => {
+					this.backendStartPromise = null;
+				});
+		}
+
+		try {
+			await this.backendStartPromise;
+			return true;
+		}
+		catch (error) {
+			if (!options.silent && win) {
+				this.showError(win, error);
+			}
+
+			throw error;
+		}
+	},
+
+	async isBackendHealthy(client, timeoutMs) {
+		try {
+			const health = await client.health(timeoutMs);
+			return health?.status === "ok";
+		}
+		catch (_) {
+			return false;
+		}
+	},
+
+	async waitForBackendReady(client) {
+		for (let attempt = 0; attempt < 45; attempt++) {
+			if (await this.isBackendHealthy(client, 2000)) {
+				this.log("Backend is ready after auto-start");
+				return true;
+			}
+
+			await Zotero.Promise.delay(1000);
+		}
+
+		throw new Error(
+			"Kokoro backend did not become ready after auto start. Check Project root in Zotero Settings.",
+		);
+	},
+
+	async startBackendProcess(settings) {
+		if (Services.appinfo.OS !== "WINNT") {
+			throw new Error("Automatic backend start is currently supported on Windows only.");
+		}
+
+		const projectRoot = settings.backendProjectRoot;
+		const scriptPath = projectRoot + "\\server\\scripts\\start_kokoro.ps1";
+		const powershellPath =
+			"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
+
+		this.assertLocalFileExists(powershellPath, "PowerShell");
+		this.assertLocalFileExists(scriptPath, "Kokoro startup script");
+
+		const process = Components.classes["@mozilla.org/process/util;1"].createInstance(
+			Components.interfaces.nsIProcess,
+		);
+		const powershell = Components.classes["@mozilla.org/file/local;1"].createInstance(
+			Components.interfaces.nsIFile,
+		);
+		powershell.initWithPath(powershellPath);
+		process.init(powershell);
+
+		const args = [
+			"-NoProfile",
+			"-ExecutionPolicy",
+			"Bypass",
+			"-WindowStyle",
+			"Hidden",
+			"-File",
+			scriptPath,
+			"-ProjectRoot",
+			projectRoot,
+		];
+
+		if (process.runw) {
+			process.runw(false, args, args.length);
+		}
+		else {
+			process.run(false, args, args.length);
+		}
+
+		this.log("Started backend process from " + scriptPath);
+		return true;
+	},
+
+	assertLocalFileExists(path, label) {
+		const file = Components.classes["@mozilla.org/file/local;1"].createInstance(
+			Components.interfaces.nsIFile,
+		);
+		file.initWithPath(path);
+
+		if (!file.exists()) {
+			throw new Error(label + " was not found: " + path);
+		}
 	},
 
 	addToAllWindows() {
@@ -615,6 +757,7 @@ LocalAcademicTTS = {
 
 	async testConnection(win) {
 		const settings = this.getSettings();
+		await this.ensureBackendReady(win);
 		const health = await this.getClient(settings.serverURL).health();
 		win.alert(
 			"Local TTS service is available.\n\nProvider: " +
@@ -683,18 +826,21 @@ LocalAcademicTTS = {
 		this.isReading = true;
 		this.updateReaderToolbarControls();
 
-		this.log(
-			"Reading selected text, characters=" +
-				cleanedText.length +
-				", chunks=" +
-				chunks.length +
-				", voice=" +
-				settings.voiceID +
-				", speed=" +
-				String(settings.speed),
-		);
-
 		try {
+			options.onStatus?.("Starting backend...");
+			await this.ensureBackendReady(win);
+
+			this.log(
+				"Reading selected text, characters=" +
+					cleanedText.length +
+					", chunks=" +
+					chunks.length +
+					", voice=" +
+					settings.voiceID +
+					", speed=" +
+					String(settings.speed),
+			);
+
 			for (let index = 0; index < chunks.length; index++) {
 				if (!this.isPlaybackRunActive(playbackRunID)) {
 					return false;

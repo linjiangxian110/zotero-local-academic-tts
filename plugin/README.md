@@ -22,7 +22,7 @@ npm run build
 The XPI is written to:
 
 ```text
-plugin/build/local-academic-tts-0.1.20.xpi
+plugin/build/local-academic-tts-0.1.21.xpi
 ```
 
 Install that XPI in a dedicated Zotero development profile, not your daily

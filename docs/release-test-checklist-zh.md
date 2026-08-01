@@ -1,8 +1,11 @@
 # Release 测试清单
 
-安装 `localtts0120.xpi` 后，按顺序测试：
+安装 `localtts0121.xpi` 后，按顺序测试：
 
 - `Edit -> Settings` 中能看到 `Local Academic TTS`
+- `Auto start` 默认勾选
+- `Project root` 指向本地项目目录
+- 关闭后端后重启 Zotero，插件能自动启动 Kokoro 后端
 - `Test Connection` 成功，显示 `provider: kokoro`
 - 默认不显示 `Tools -> Local TTS -> Debug`
 - 勾选 `Show Debug menu in Tools` 后，重启 Zotero 或重新加载插件，能看到 Debug

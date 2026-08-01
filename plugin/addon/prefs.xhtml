@@ -8,6 +8,15 @@
 			<html:label for="local-academic-tts-serverURL">Backend URL</html:label>
 			<html:input id="local-academic-tts-serverURL" type="text" preference="extensions.localacademictts.serverURL" />
 
+			<html:label for="local-academic-tts-backendProjectRoot">Project root</html:label>
+			<html:input id="local-academic-tts-backendProjectRoot" type="text" preference="extensions.localacademictts.backendProjectRoot" />
+
+			<html:label for="local-academic-tts-autoStartBackend">Auto start</html:label>
+			<html:label>
+				<html:input id="local-academic-tts-autoStartBackend" type="checkbox" preference="extensions.localacademictts.autoStartBackend" />
+				Start Kokoro backend automatically
+			</html:label>
+
 			<html:label for="local-academic-tts-voiceID">Voice</html:label>
 			<html:select id="local-academic-tts-voiceID" preference="extensions.localacademictts.voiceID">
 				<html:option value="af_heart">af_heart - American female</html:option>

@@ -2,6 +2,8 @@
 
 这是一个 Zotero 本地学术英文朗读插件。第一版 MVP 支持在 Zotero PDF Reader 中选中英文文本，通过本机 Kokoro 后端生成语音，并在 Zotero 中播放。
 
+语音合成能力基于 Kokoro / Kokoro-82M。本项目主要完成 Zotero 插件、本地 HTTP 服务、文本处理、播放控制、打包和 Windows 使用流程；不训练 Kokoro 模型，也不声明 Kokoro 模型归本项目所有。
+
 ## 功能范围
 
 - 支持 PDF Reader 选区朗读
@@ -9,6 +11,7 @@
 - 支持单击悬浮按钮暂停/继续
 - 支持通过 `Tools -> Local TTS -> Stop` 完全停止
 - 支持在 Zotero 统一设置中配置后端地址、声音和语速
+- 支持打开 Zotero 后自动启动本地 Kokoro 后端
 - 不包含声音克隆
 - 不替换 Zotero 自带 Read Aloud
 
@@ -17,12 +20,17 @@
 1. 打开 Zotero。
 2. 进入 `Tools -> Add-ons`。
 3. 点击齿轮图标，选择 `Install Add-on From File...`。
-4. 选择 release 文件夹中的 `localtts0120.xpi`。
+4. 选择 release 文件夹中的 `localtts0121.xpi`。
 5. 按提示重启 Zotero。
 
 ## 启动本地 Kokoro 后端
 
-每次重启电脑或关闭后端窗口后，都需要先启动后端。
+默认情况下，插件会在 Zotero 启动后自动尝试启动本地 Kokoro 后端。请在 `Edit -> Settings -> Local Academic TTS` 中确认：
+
+- `Auto start` 已勾选
+- `Project root` 指向项目根目录，例如 `D:\research\zotero朗读插件`
+
+如果自动启动失败，也可以手动启动后端。
 
 在 PowerShell 中运行：
 
@@ -52,6 +60,8 @@ cd D:\research\zotero朗读插件
 可配置项：
 
 - `Backend URL`：默认 `http://127.0.0.1:8765`
+- `Project root`：本项目所在目录，用于自动启动后端
+- `Auto start`：默认开启，打开 Zotero 后自动启动 Kokoro 后端
 - `Voice`
   - `af_heart`：美式女声
   - `bf_emma`：英式女声

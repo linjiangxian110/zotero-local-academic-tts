@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.21
+
+- Added optional automatic Kokoro backend startup from Zotero.
+- Added backend project root preference.
+- Documented Kokoro/Kokoro-82M attribution.
+
 ## v0.1.20
 
 MVP release.
@@ -12,4 +18,5 @@ MVP release.
 - Kept `Tools -> Local TTS -> Stop` as a backup stop control.
 - Added diagnostic fake provider and backend tests.
 - Added Windows Kokoro startup script with health checks.
+- Added optional automatic backend startup from the Zotero plugin.
 - Added Chinese usage guide and release test checklist.

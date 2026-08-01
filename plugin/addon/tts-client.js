@@ -2,12 +2,13 @@ var LocalAcademicTTSTTSClient = {
 	baseURL: "http://127.0.0.1:8765",
 	timeoutMs: 60000,
 
-	async health() {
+	async health(timeoutMs = this.timeoutMs) {
 		const xhr = await this.withTimeout(
 			Zotero.HTTP.request("GET", this.baseURL + "/health", {
 				responseType: "json",
 			}),
 			"Health check",
+			timeoutMs,
 		);
 
 		this.assertStatus(xhr, 200, "Health check failed");
@@ -36,7 +37,7 @@ var LocalAcademicTTSTTSClient = {
 		return xhr.response;
 	},
 
-	async withTimeout(promise, label) {
+	async withTimeout(promise, label, timeoutMs = this.timeoutMs) {
 		let timedOut = false;
 		const guardedPromise = promise.catch((error) => {
 			if (timedOut) {
@@ -46,9 +47,11 @@ var LocalAcademicTTSTTSClient = {
 			throw error;
 		});
 
-		const timeout = Zotero.Promise.delay(this.timeoutMs).then(() => {
+		const timeout = Zotero.Promise.delay(timeoutMs).then(() => {
 			timedOut = true;
-			throw new Error(label + " timed out after 60 seconds.");
+			throw new Error(
+				label + " timed out after " + Math.round(timeoutMs / 1000) + " seconds.",
+			);
 		});
 
 		try {
@@ -86,7 +89,7 @@ var LocalAcademicTTSTTSClient = {
 			);
 		}
 
-		if (message.includes("timed out after 60 seconds")) {
+		if (message.includes("timed out after")) {
 			return (
 				message +
 				" The first Kokoro request can be slow while the model loads. If this repeats, restart the backend and run Local TTS: Test Connection."

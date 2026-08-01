@@ -3,6 +3,8 @@ var LocalAcademicTTSPrefs = {
 	initialized: false,
 	defaults: {
 		serverURL: "http://127.0.0.1:8765",
+		backendProjectRoot: "D:\\research\\zotero朗读插件",
+		autoStartBackend: "true",
 		voiceID: "af_heart",
 		speed: "1.0",
 		showDebugMenu: "false",
@@ -15,8 +17,10 @@ var LocalAcademicTTSPrefs = {
 
 		this.initialized = true;
 		this.bindTextInput("serverURL");
+		this.bindTextInput("backendProjectRoot");
 		this.bindTextInput("speed");
 		this.bindSelect("voiceID");
+		this.bindCheckbox("autoStartBackend");
 		this.bindCheckbox("showDebugMenu");
 
 		document

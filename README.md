@@ -3,6 +3,13 @@
 Zotero Local Academic TTS is a Zotero plugin plus a local FastAPI text-to-speech
 service for reading selected English academic text inside Zotero PDF Reader.
 
+The speech synthesis backend is built on
+[Kokoro](https://github.com/hexgrad/kokoro) /
+[Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M). This project provides
+the Zotero integration, local HTTP service, text normalization, playback
+controls, packaging, and Windows workflow around Kokoro; it does not train or
+claim ownership of the Kokoro model.
+
 The MVP is intentionally focused:
 
 - Select English text in Zotero PDF Reader.
@@ -17,7 +24,7 @@ Zotero's built-in Read Aloud are out of scope for the first milestone.
 
 ## Current Release
 
-MVP release: `v0.1.20`
+MVP release: `v0.1.21`
 
 The local release bundle is generated at:
 
@@ -27,7 +34,7 @@ D:\research\zotero-local-tts-release
 
 It contains:
 
-- `localtts0120.xpi`
+- `localtts0121.xpi`
 - `start_kokoro.ps1`
 - `README-中文使用说明.md`
 - `测试清单.md`
@@ -42,6 +49,7 @@ It contains:
 - Floating pause/resume button in the PDF Reader
 - Backup playback controls in `Tools -> Local TTS`
 - Zotero Preferences pane for backend URL, voice, speed, and debug menu
+- Optional automatic backend startup when Zotero opens
 
 ## Requirements
 
@@ -96,10 +104,14 @@ Expected provider for normal use:
 1. Open Zotero.
 2. Go to `Tools -> Add-ons`.
 3. Choose `Install Add-on From File...`.
-4. Select `localtts0120.xpi`.
+4. Select `localtts0121.xpi`.
 5. Restart Zotero if prompted.
 
 Configure the plugin in `Edit -> Settings -> Local Academic TTS`.
+
+The plugin can also auto-start the backend when Zotero opens. In Zotero
+Settings, keep `Auto start` enabled and make sure `Project root` points to this
+repository directory.
 
 ## Build the XPI
 
@@ -137,3 +149,6 @@ $env:LOCAL_TTS_RUN_MODEL_TESTS = "1"
 ## License
 
 MIT
+
+Kokoro and Kokoro-82M are separate upstream projects with their own licenses.
+See the Kokoro project pages for model/library licensing details.
