@@ -1,0 +1,15 @@
+The proposed method achieves 92.6 percent accuracy on ImageNet.
+
+We fine-tune a seven-billion-parameter large language model.
+
+The average displacement error, abbreviated as A D E, decreases significantly.
+
+Smith et al. conducted three experiments using an NVIDIA RTX 4090 GPU.
+
+The learning rate was set to one times ten to the minus fourth.
+
+Figure 3 illustrates the complete inference pipeline.
+
+The results are statistically significant, with a p-value below 0.05.
+
+Trajectory prediction requires both accuracy and multimodal diversity.

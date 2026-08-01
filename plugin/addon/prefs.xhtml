@@ -1,0 +1,31 @@
+<vbox
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+>
+	<groupbox>
+		<label><html:h2>Local Academic TTS</html:h2></label>
+		<html:div style="display: grid; grid-template-columns: 140px minmax(260px, 420px); gap: 10px 12px; align-items: center; max-width: 620px;">
+			<html:label for="local-academic-tts-serverURL">Backend URL</html:label>
+			<html:input id="local-academic-tts-serverURL" type="text" preference="extensions.localacademictts.serverURL" />
+
+			<html:label for="local-academic-tts-voiceID">Voice</html:label>
+			<html:select id="local-academic-tts-voiceID" preference="extensions.localacademictts.voiceID">
+				<html:option value="af_heart">af_heart - American female</html:option>
+				<html:option value="bf_emma">bf_emma - British female</html:option>
+			</html:select>
+
+			<html:label for="local-academic-tts-speed">Speed</html:label>
+			<html:input id="local-academic-tts-speed" type="number" min="0.5" max="2" step="0.1" preference="extensions.localacademictts.speed" />
+
+			<html:label for="local-academic-tts-showDebugMenu">Debug menu</html:label>
+			<html:label>
+				<html:input id="local-academic-tts-showDebugMenu" type="checkbox" preference="extensions.localacademictts.showDebugMenu" />
+				Show Debug menu in Tools
+			</html:label>
+		</html:div>
+		<html:div style="margin-top: 14px;">
+			<html:button id="local-academic-tts-test-connection" type="button">Test Connection</html:button>
+			<html:span id="local-academic-tts-status" style="margin-left: 12px;"></html:span>
+		</html:div>
+	</groupbox>
+</vbox>

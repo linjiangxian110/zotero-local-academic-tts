@@ -1,0 +1,29 @@
+[project]
+name = "zotero-local-academic-tts-server"
+version = "0.1.0"
+description = "Local TTS HTTP service for the Zotero Local Academic TTS plugin."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.7",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8.0",
+  "httpx>=0.27",
+]
+model = [
+  "kokoro>=0.9.4",
+  "soundfile>=0.12",
+  "numpy>=1.26,<2",
+  "num2words>=0.5",
+  "misaki[en]",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "model: tests that load or run an actual TTS model",
+]
