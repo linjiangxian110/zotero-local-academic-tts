@@ -3,7 +3,7 @@ var LocalAcademicTTSPrefs = {
 	initialized: false,
 	defaults: {
 		serverURL: "http://127.0.0.1:8765",
-		backendProjectRoot: "D:\\research\\zotero朗读插件",
+		backendProjectRoot: "",
 		autoStartBackend: "true",
 		voiceID: "af_heart",
 		speed: "1.0",

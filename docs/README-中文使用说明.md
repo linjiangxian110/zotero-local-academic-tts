@@ -17,10 +17,12 @@
 
 ## 安装插件
 
+如果是第一次安装，请先按 [环境配置与安装](setup-zh.md) 准备 Python、Kokoro 和本地后端环境。
+
 1. 打开 Zotero。
 2. 进入 `Tools -> Add-ons`。
 3. 点击齿轮图标，选择 `Install Add-on From File...`。
-4. 选择 release 文件夹中的 `localtts0121.xpi`。
+4. 选择 release 文件夹中的 `localtts0122.xpi`。
 5. 按提示重启 Zotero。
 
 ## 启动本地 Kokoro 后端
@@ -72,13 +74,14 @@ cd D:\research\zotero朗读插件
 
 ## 使用方法
 
-1. 先启动 Kokoro 后端。
+1. 打开 Zotero。
 2. 在 Zotero 打开一篇 PDF。
 3. 选中一段英文文本。
 4. 在选区弹窗中点击 `Local TTS Read`。
-5. 朗读开始后，PDF 页面右上角会出现悬浮暂停/继续按钮。
-6. 单击悬浮按钮可暂停，再单击可继续。
-7. 需要完全停止时，使用 `Tools -> Local TTS -> Stop`。
+5. 如果后端未运行，插件会尝试自动启动本地 Kokoro 后端。
+6. 朗读开始后，PDF 页面右上角会出现悬浮暂停/继续按钮。
+7. 单击悬浮按钮可暂停，再单击可继续。
+8. 需要完全停止时，使用 `Tools -> Local TTS -> Stop`。
 
 ## 常见问题
 

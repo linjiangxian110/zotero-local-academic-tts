@@ -1,6 +1,6 @@
 # Release 测试清单
 
-安装 `localtts0121.xpi` 后，按顺序测试：
+安装 `localtts0122.xpi` 后，按顺序测试：
 
 - `Edit -> Settings` 中能看到 `Local Academic TTS`
 - `Auto start` 默认勾选

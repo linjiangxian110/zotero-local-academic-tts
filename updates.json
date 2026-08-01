@@ -1,0 +1,19 @@
+{
+  "addons": {
+    "localacademictts@example.com": {
+      "updates": [
+        {
+          "version": "0.1.22",
+          "update_link": "https://github.com/linjiangxian110/zotero-local-academic-tts/releases/download/v0.1.22/localtts0122.xpi",
+          "update_hash": "sha256:24987251e67b7d4b8aaf08edef06759f8dae5ba170f48cad35c225a72e0ff0f0",
+          "applications": {
+            "zotero": {
+              "strict_min_version": "6.999",
+              "strict_max_version": "10.*"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

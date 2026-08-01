@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.22
+
+- Changed the default backend project root to empty for public releases.
+- Added a detailed Chinese setup and installation guide.
+- Updated release documentation and GitHub metadata.
+
 ## v0.1.21
 
 - Added optional automatic Kokoro backend startup from Zotero.

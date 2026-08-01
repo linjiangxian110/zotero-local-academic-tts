@@ -24,7 +24,7 @@ Zotero's built-in Read Aloud are out of scope for the first milestone.
 
 ## Current Release
 
-MVP release: `v0.1.21`
+MVP release: `v0.1.22`
 
 The local release bundle is generated at:
 
@@ -34,9 +34,11 @@ D:\research\zotero-local-tts-release
 
 It contains:
 
-- `localtts0121.xpi`
+- `localtts0122.xpi`
 - `start_kokoro.ps1`
 - `README-中文使用说明.md`
+- `setup-zh.md`
+- `release-zh.md`
 - `测试清单.md`
 
 ## Features
@@ -58,6 +60,9 @@ It contains:
 - Python 3.12
 - PowerShell
 - Internet access during first model/dependency installation
+
+For a complete Chinese step-by-step guide, see
+[环境配置与安装](docs/setup-zh.md).
 
 ## Backend Setup
 
@@ -104,7 +109,7 @@ Expected provider for normal use:
 1. Open Zotero.
 2. Go to `Tools -> Add-ons`.
 3. Choose `Install Add-on From File...`.
-4. Select `localtts0121.xpi`.
+4. Select `localtts0122.xpi`.
 5. Restart Zotero if prompted.
 
 Configure the plugin in `Edit -> Settings -> Local Academic TTS`.
@@ -142,6 +147,8 @@ $env:LOCAL_TTS_RUN_MODEL_TESTS = "1"
 ## Documentation
 
 - [中文使用说明](docs/README-中文使用说明.md)
+- [环境配置与安装](docs/setup-zh.md)
+- [GitHub 发布流程](docs/release-zh.md)
 - [Release 测试清单](docs/release-test-checklist-zh.md)
 - [Architecture](docs/architecture.md)
 - [API](docs/api.md)

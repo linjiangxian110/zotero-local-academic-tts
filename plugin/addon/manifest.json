@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
   "name": "Local Academic TTS",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "description": "Play local academic TTS audio from Zotero.",
-  "homepage_url": "https://github.com/local/local-academic-tts",
+  "homepage_url": "https://github.com/linjiangxian110/zotero-local-academic-tts",
   "author": "Local Academic TTS contributors",
   "applications": {
     "zotero": {
       "id": "localacademictts@example.com",
-      "update_url": "https://example.com/local-academic-tts/update.json",
+      "update_url": "https://raw.githubusercontent.com/linjiangxian110/zotero-local-academic-tts/main/updates.json",
       "strict_min_version": "6.999",
       "strict_max_version": "10.*"
     }
